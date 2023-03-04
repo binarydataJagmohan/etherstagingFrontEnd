@@ -204,7 +204,7 @@ class HomeHeader extends Component {
                         </div>
                       </div>
                       :
-                      <p><a href="#offcanvasExample" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample">Login/Signup</a> </p>
+                      <p><a href="#offcanvasExample" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample">Login1/Signup</a> </p>
                   }
                 </li>
                 <li className="nav-item bangla-part sp-rifht-0"><a className="nav-link" href="#" Style="border-radius: 10px">Bangla</a></li>
