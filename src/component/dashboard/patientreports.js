@@ -1,13 +1,96 @@
 import React, { Component } from 'react';
-//import {API_TOKEN_NAME} from '../../constants';
+import {API_TOKEN_NAME, PATIENT_NAME, USER_ID, IMAGE_URL} from '../../constants';
 import {Route} from 'react-router-dom';
-//import { scAxios } from '../..';
+import { scAxios, scAxiosAdmin } from '../..';
 //import { ToastContainer, toast } from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
 import LeftSidebar from '../../component/dashboard/leftsidebar';
 import dr_photo from '../../images/dr-photo.png';
 import lines from '../../images/lines.png';
+
+const GetPatitentAppointment = (data) => {
+  return new Promise((resolve, reject) => {
+      const req = scAxios.request('/appointment', {
+          method: 'get',
+          headers: {
+              'Accept': 'application/json',
+          },
+          params: {
+              ...data
+          }
+      });
+      req.then(res => resolve(res.data))
+          .catch(err => reject(err));
+  });
+}
+const getSingleDoctorData = (id) => {
+  return new Promise((resolve, reject) => {
+    const req = scAxiosAdmin.request('/doctors/getsingledoctors/'+id, {
+      method: 'get',
+      headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem(API_TOKEN_NAME)
+      }
+    });
+    req.then(res => resolve(res.data))
+        .catch(err => reject(err));
+  });
+}
 class PatientReports extends Component {
+	state = {
+	    patient_ID: '',
+	    patient_age: '',
+	    patient_gender: '',
+	    patient_name: '',
+	    patient_phone: '',
+	    latest_consultant:[],
+	    doctor_name: '',
+	    appointment_date:'',
+	    department_name: '',
+	    doctor_id:'',
+	    doctor_profile:'',
+	    patient_report_data:[],
+	    paitent_report_doctor_name:'',
+  	}
+  	refreshGetPatitentAppointment = () => {
+	    const data = {
+	      xpatient: localStorage.getItem(USER_ID) 
+	    }
+	    GetPatitentAppointment(data)
+	    .then(res => {
+	      this.refreshGetDoctorData(res[0].doctor[0].id);
+	      this.setState({
+	        doctor_name: res[0].doctor[0].name,
+	        appointment_date: res[0].date,
+	        department_name: res[0].doctor[0].dept_name,
+	        doctor_id: res[0].doctor[0].id,
+	      });
+	    })
+	    .catch(err => {
+	        console.log(err);
+	    });
+  	}
+  	refreshGetDoctorData = (id) => {
+	    getSingleDoctorData(id)
+	    .then(res => {
+	      if(res.status===true){
+	        var records = res.data;
+	        this.setState({ 
+	          doctor_profile: records.doctor_profile,
+	        });
+	      } else {
+	        this.setState({  
+	          doctor_profile: '',
+	        });
+	      }
+	    })
+	    .catch(err => {
+	        console.log(err);
+	    });
+  	}
+  	componentDidMount(){
+    	this.refreshGetPatitentAppointment();
+  	}
   	render() {
 	    return (
 	    	<div>
@@ -44,17 +127,23 @@ class PatientReports extends Component {
 					                        <h3 className="mb-4">Appointments <i className="fa-solid fa-calendar"></i> </h3> 
 					                        <div className="row">
 					                           	<div className="col-3 img-sp">
-					                             	<img src={dr_photo} alt="drphoto"/>
+					                             	{ this.state.doctor_profile 
+				                                  ?
+				                                    <img src={IMAGE_URL+'/DoctorProfileImg/'+this.state.doctor_profile} alt={this.state.doctor_profile}/>
+				                                  :
+				                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg" alt={this.state.doctor_profile}/>
+				                                    /*<img src={dr_photo} alt="drphoto"/>*/
+				                                }
 					                           	</div>
 					                           	<div className="col-9 prof sp-l-r">
-					                             	<p><b>PROF. DR. MUHAMMAD HAFIZUR RAHMAN</b></p>
-					                             	<p>Endocrinology & Metabolism</p>
-					                             	<p className="date-link">Referred By <span>Kazi A. Karim</span> on <a href="#">Jan 10, 2022</a></p>
+					                             	<p><b>{this.state.doctor_name}</b></p>
+					                             	<p>{this.state.department_name}</p>
+					                             	<p className="date-link">Referred By <span>{this.state.doctor_name}</span> on <a href="#">{this.state.appointment_date}</a></p>
 					                           	</div>
 					                        </div>
 					                        <div className="row">
 					                           	<div className="col-5 img-sp">
-					                             	<p className="mt-3 Date-time">Date <br/><b>Jan 22, 2022</b></p> 
+					                             	<p className="mt-3 Date-time">Date <br/><b>{this.state.appointment_date}</b></p> 
 					                           	</div>
 					                           	<div className="col-7">                      
 					                             	<p className="mt-3 Date-time">Time <br/><b>9:30 am - 10:00 am</b></p>
@@ -64,7 +153,7 @@ class PatientReports extends Component {
 					                           	</div>
 					                        </div> 
 					                    </div>
-					                    <div className="col-sm-4 endocrinology-upcoming"> 
+					                    {/*<div className="col-sm-4 endocrinology-upcoming"> 
 					                        <h3 className="mb-4">Appointments <i className="fa-solid fa-calendar"></i> </h3> 
 					                        <div className="row">
 					                           	<div className="col-3 img-sp">
@@ -111,7 +200,7 @@ class PatientReports extends Component {
 					                             	<button className="btn-notes mt-4 w-100">Schedule Followup</button>
 					                           	</div>
 					                        </div> 
-					                    </div>
+					                    </div>*/}
                   					</div>
             					</div>
         					</div>

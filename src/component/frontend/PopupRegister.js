@@ -246,7 +246,7 @@ class PopupRegister extends Component {
           thana: this.state.thana,
           district: this.state.district,
           temporary_patient_id: res[0]['Temporary_Patient_ID'],
-          role: 'patient'
+          role: '2'
         }
         this.SubmitRegisterSelf(patient_user);
       })

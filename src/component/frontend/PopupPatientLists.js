@@ -97,6 +97,9 @@ class PopupPatientLists extends Component {
     const data = {
         patientid: this.state.patient_id,
     }
+    const token = '';
+    const user_role = '2';
+    const user_email = '';
     const patient_id = this.state.patient_id; 
     const patientName = this.state.patient_name;
     const login_phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER); 
@@ -109,16 +112,17 @@ class PopupPatientLists extends Component {
     const search_selected_doc_name = '';
     PatientLoginUser(data)
     .then(res => {
-      if (!!res[0].token) {
-          startUserSession(res[0].token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
+      //if (!!res[0].token) {
+          //startUserSession(res[0].token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
+          startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
           this.setState({ signin_success: true});
           this.refreshResetOTPData();
           this.props.nextStep();
-      } else {
+      /*} else {
           toast.error(res.message, {
               position: toast.POSITION.BOTTOM_RIGHT
           });
-      }
+      }*/
     })
     .catch(err => {
       console.log(err);

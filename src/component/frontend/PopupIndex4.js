@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { scAxios, scAxiosSMS, scAxiosAdmin } from '../..';
+import {USER_ID} from '../../constants';
 import { startUserSession } from '../../userSession';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,6 +8,7 @@ import uhlcare_logo from '../../images/uhlcare-logo.webp';
 import uhl_logo from '../../images/uhl-logo.webp';
 import medix_logo from '../../images/medix-logo.webp';
 import PopupRegister from '../../component/frontend/PopupRegister';
+import PopupIndex2 from '../../component/frontend/PopupIndex2';
 import $ from 'jquery';
 
 const loginUser = (data) => {
@@ -163,6 +165,7 @@ class PopupIndex4 extends Component {
     otp_number:'',
     showRegisterPopup:false,
     showPopup:false,
+    showDoctorListPopup: false,
   };
   /*validateForm() {
     let fields = this.state.fields;
@@ -404,6 +407,8 @@ class PopupIndex4 extends Component {
         .then(res => {
           if(res.length > 1){
             let token = '';
+            let user_role = '2';
+            let user_email = '';
             let phone_number = this.state.phone_number;
             let search_selected_doc_id = '';
             let patientid = '';
@@ -415,7 +420,7 @@ class PopupIndex4 extends Component {
             let schedule_time = '';
             let search_selected_doc_name = '';
             let doctor_profile_avability = this.props.doctorProfilePageClick;
-            startUserSession(token, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+            startUserSession(token, user_role, user_email, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
             this.props.nextStep();
           } else {
             let patient_id = res[0].PatientID;
@@ -456,17 +461,21 @@ class PopupIndex4 extends Component {
           window.location.href = '/popuppatientid?userid='+res.data.id;
         } else {
           const data = {
-            patientid: patient_id,
+            patientid: res.data.patient_id,
           }
           LoginPatient(data)
           .then(res => {
             const data = {
-              patient: patient_id,
+              patient: res[0]['pid'],
             }
             let token = '';
+            let user_role = '2';
+            let user_email = '';
             PatitentDetails(data)
             .then(patient_details_res => {
               let token = '';
+              let user_role = '2';
+              let user_email = '';
               let login_phone_number = patient_details_res[0].patient_phone;
               let search_selected_doc_id = '';
               let schedule_date = '';
@@ -477,13 +486,14 @@ class PopupIndex4 extends Component {
               let schedule_time = '';
               let search_selected_doc_name = '';
               let doctor_profile_avability = '';
-              startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
-              window.location.href = '/dashboard/patient-dashboard';
+              startUserSession(token, user_role, user_email, res[0]['pid'], login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+              //window.location.href = '/dashboard/patient-dashboard';
+              this.props.nextStep();
             })
             .catch(err => {
               console.log(err);
             });
-            startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+            startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
             this.setState({ signin_success: true});
             //this.props.nextStep();
           })
@@ -498,6 +508,8 @@ class PopupIndex4 extends Component {
     });
   }
   PatientLoginSubmit = (data, phone_number, patient_name) => {
+    let user_role = '2';
+    let user_email = '';
     let login_phone_number = phone_number;
     let search_selected_doc_id = '';
     let schedule_date = '';
@@ -511,7 +523,7 @@ class PopupIndex4 extends Component {
     LoginPatient(data)
     .then(res => {
       if (!!res[0].token) {
-        startUserSession(res[0].token, data.patientid, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+        startUserSession(res[0].token, user_role, user_email, data.patientid, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
         this.setState({ signin_success: true});
         this.refreshResetOTPData();
         this.props.nextStep();
@@ -649,7 +661,7 @@ class PopupIndex4 extends Component {
             <div className="left-offcanvas">
               <h4>Login / Register to <br /> Book Your <br /> Appointment</h4> 
               <form onSubmit={this.handleSubmit} id="loginform" className="needs-validation" noValidate>
-                <input placeholder="Enter Patient I.D (Optional)" type="text" id="patient_id" name="patient_id" value={this.state.fields.patient_id} onChange={this.handleChange} autoComplete="off" className="form-control" />
+                <input placeholder="Enter Patient I.D (Optional)/Username" type="text" id="patient_id" name="patient_id" value={this.state.fields.patient_id} onChange={this.handleChange} autoComplete="off" className="form-control" />
                 <div className="input-group mt-3">
                   <input type="password" className="form-control" placeholder="Enter Password" name="password" id="password" value={this.state.fields.password} onChange={this.handleChange} required autoComplete="off"/>
                 </div>
@@ -673,7 +685,7 @@ class PopupIndex4 extends Component {
                     <button type="submit" className="btn-links appointment-new" id="black-btn"> Login </button>
                   </div> 
                 </div> 
-                <p><label className="dont">Don't have a patient I.D? <br /><button className="nav-link active" onClick={this.ShowRegisterPopup} style={{"background": "none", "border": "none", "padding": "0px", "color": "rgb(251, 98, 1)"}} data-bs-dismiss="offcanvas" aria-label="Close">Register here.</button></label></p>
+                <p><label className="dont">Don't have a patient I.D? <br /><a className="nav-link active" onClick={this.ShowRegisterPopup} style={{"background": "none", "border": "none", "padding": "0px", "color": "rgb(251, 98, 1)"}} data-bs-dismiss="offcanvas" aria-label="Close">Register here.</a></label></p>
               </form>
             </div>
           </div>

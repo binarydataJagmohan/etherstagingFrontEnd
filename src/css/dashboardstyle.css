@@ -69,7 +69,18 @@ ul.left-menu li.active {
 ul.left-menu li.active a {
     color: #fff;
 }
-ul.left-menu li.active a i.fa-solid.fa-house {
+/*ul.left-menu li.active a i.fa-solid.fa-house {
+    margin-right: 8px;
+    margin-top: 5px;
+    margin-left: -32px;
+    color: rgb(255, 255, 255);
+}*/
+ul.left-menu li a i {
+    margin-right: 8px;
+    margin-top: 5px;
+    color: rgb(255, 255, 255);
+}
+ul.left-menu li.active a i {
     margin-right: 8px;
     margin-top: 5px;
     margin-left: -32px;

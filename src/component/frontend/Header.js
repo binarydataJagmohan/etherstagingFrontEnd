@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {API_TOKEN_NAME, WEBSITEPAGE_URL} from '../../constants';
+import {API_TOKEN_NAME, WEBSITEPAGE_URL, USER_ID} from '../../constants';
 import { scAxiosAdmin } from '../..';
 import logo from '../../images/logo2.png';
 import hotline_phone from '../../images/hotline_phone.svg';
@@ -57,7 +57,7 @@ class Header extends Component {
     });
   }
   componentDidMount(){
-    if(localStorage.getItem(API_TOKEN_NAME)){
+    if(localStorage.getItem(USER_ID)){
       let login_step_number = this.state.step + 1;
       this.setState({
         step: login_step_number + 1,
@@ -157,14 +157,14 @@ class Header extends Component {
           {/*<div className="container">*/}
             <nav className="navbar navbar-expand-lg navbar-light"> 
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-sm-6 col-3">
                   <a className="navbar-brand" href="/"><img src={logo} alt="logo2"/></a>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-sm-6 col-7">
                   <input type="search" className="form-control" name="header_search_keywords" id="header_search_keywords" value="" placeholder="Search..."/>
                 </div>
               </div>
-              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <button className="navbar-toggler sub_header_menu_toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon" />
               </button>
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -191,7 +191,7 @@ class Header extends Component {
                   } 
                   <li className="nav-item login-white">
                   {
-                    localStorage.getItem(API_TOKEN_NAME)
+                    localStorage.getItem(USER_ID)
                     ?
                       <p><a href="/logout">Logout</a></p>
                     :

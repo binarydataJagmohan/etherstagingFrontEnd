@@ -1,5 +1,5 @@
 //import { TWENTY_MINUTES_TIME_IN_MILLISECONDS, API_TOKEN_NAME, API_TOKEN_EXPIRY_NAME, USER_ROLE, USER_ID, USER_CREATED_BY, USER_EMAIL, IS_ACTIVE, RGSTEP1, RGSTEP2, RGSTEP3, RGSTEP4, LOGIN_PHONE_NUMBER, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, APPOINTMENT_ID, DOCTOR_NAME, DOCTOR_FEES, PATIENT_NAME, SCHEDULE_TIME } from "./constants";
-import { TWENTY_MINUTES_TIME_IN_MILLISECONDS, API_TOKEN_NAME, API_TOKEN_EXPIRY_NAME, USER_ID, LOGIN_PHONE_NUMBER, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, APPOINTMENT_ID, DOCTOR_NAME, DOCTOR_FEES, PATIENT_NAME, SCHEDULE_TIME, SEARCH_SELECTED_DOC_NAME, DOCTOR_PROFILE_AVABILITY } from "./constants";
+import { TWENTY_MINUTES_TIME_IN_MILLISECONDS, API_TOKEN_NAME, API_TOKEN_EXPIRY_NAME, USER_ID, LOGIN_PHONE_NUMBER, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, APPOINTMENT_ID, DOCTOR_NAME, DOCTOR_FEES, PATIENT_NAME, SCHEDULE_TIME, SEARCH_SELECTED_DOC_NAME, DOCTOR_PROFILE_AVABILITY, USER_EMAIL, USER_ROLE } from "./constants";
 import { scAxios } from "./";
 
 let userTokenRefreshIntervalId = '';
@@ -21,18 +21,19 @@ const userTokenRefreshApi = () => {
 
 export const userTokenRefreshInterval = () => {
     userTokenRefreshApi()
-        .then(res => {
-             /* eslint-disable */
-            startUserSession(res.access_token);
-        })
-        .catch(err => {
-            console.log('Error refreshing user token.', err);
-            alert('Error refreshing user token.', err);
-        })
+    .then(res => {
+         /* eslint-disable */
+        startUserSession(res.access_token);
+    })
+    .catch(err => {
+        console.log('Error refreshing user token.', err);
+        alert('Error refreshing user token.', err);
+    })
 }
-export const startUserSession = (token, user_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability) => {
+export const startUserSession = (token, user_role, user_email, user_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability) => {
     localStorage.setItem(API_TOKEN_NAME, token);
-    //localStorage.setItem(USER_ROLE, user_role);
+    localStorage.setItem(USER_ROLE, user_role);
+    localStorage.setItem(USER_EMAIL, user_email);
     localStorage.setItem(USER_ID, user_id);
     localStorage.setItem(LOGIN_PHONE_NUMBER, login_phone_number);
     localStorage.setItem(SEARCH_SELECTED_DOC_ID, search_selected_doc_id);

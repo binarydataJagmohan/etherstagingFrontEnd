@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {API_TOKEN_NAME, USER_ID, LOGIN_PHONE_NUMBER, PATIENT_NAME, SEARCH_SELECTED_DOC_ID, SEARCH_SELECTED_DOC_NAME, SCHEDULE_DATE, IMAGE_URL} from '../../constants';
+import {API_TOKEN_NAME, USER_ID, USER_ROLE, USER_EMAIL, LOGIN_PHONE_NUMBER, PATIENT_NAME, SEARCH_SELECTED_DOC_ID, SEARCH_SELECTED_DOC_NAME, SCHEDULE_DATE, IMAGE_URL} from '../../constants';
 import { scAxiosAdmin } from '../..';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -143,6 +143,8 @@ class PopupIndex2 extends Component {
       }
       if(localStorage.getItem(API_TOKEN_NAME) !== null){
         const token = localStorage.getItem(API_TOKEN_NAME);
+        const user_role = localStorage.getItem(USER_ROLE);
+        const user_email = localStorage.getItem(USER_EMAIL);
         const patient_id = localStorage.getItem(USER_ID);
         const login_phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER);
         const search_selected_doc_id = doctor_id;
@@ -167,7 +169,7 @@ class PopupIndex2 extends Component {
         const patientName = localStorage.getItem(PATIENT_NAME);
         const schedule_time = '';
         const search_selected_doc_name = this.state.search_selected_doc_name;
-        startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
+        startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
         this.props.nextStep();
       }
       /*scheduleDoctor(data)

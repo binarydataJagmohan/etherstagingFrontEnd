@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {API_TOKEN_NAME, USER_ID, LOGIN_PHONE_NUMBER, PATIENT_NAME, IMAGE_URL, SCHEDULE_DATE, SEARCH_SELECTED_DOC_NAME} from '../../constants';
+import {API_TOKEN_NAME, USER_ID, USER_ROLE, USER_EMAIL, LOGIN_PHONE_NUMBER, PATIENT_NAME, IMAGE_URL, SCHEDULE_DATE, SEARCH_SELECTED_DOC_NAME} from '../../constants';
 import { scAxiosAdmin } from '../..';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -141,6 +141,8 @@ class SubPopupIndex2 extends Component {
       }
       if(localStorage.getItem(API_TOKEN_NAME)){
         const token = localStorage.getItem(API_TOKEN_NAME);
+        const user_role = localStorage.getItem(USER_ROLE);
+        const user_email = localStorage.getItem(USER_EMAIL);
         const patient_id = localStorage.getItem(USER_ID);
         const login_phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER);
         const search_selected_doc_id = doctor_id;
@@ -176,9 +178,11 @@ class SubPopupIndex2 extends Component {
         const schedule_time = '';
         const search_selected_doc_name = localStorage.getItem(SEARCH_SELECTED_DOC_NAME);
         const doctor_profile_avability = '';
-        startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+        startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
       } else {
         const token = '';
+        const user_role = '2';
+        const user_email = '';
         const patient_id = '';
         const login_phone_number = '';
         const search_selected_doc_id = doctor_id;
@@ -212,7 +216,7 @@ class SubPopupIndex2 extends Component {
         const schedule_time = '';
         const search_selected_doc_name = '';
         const doctor_profile_avability = '';
-        startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+        startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
       }
       this.onClickPopupShow();
     } else {

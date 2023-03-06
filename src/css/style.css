@@ -3053,3 +3053,40 @@ select#age {
 .home_header_dropdown .dropdown-menu .dropdown-item:hover{
     background: none;
 }
+#navbarSupportedContent.show {
+    display: unset !important;
+    margin-top: 10px;
+}
+.doctor-part-img {
+    padding: 0 0 10px 0 !important;
+}
+@media (max-width:991px) {
+    div#navbarSupportedContent { 
+        background: #fb6201;
+        padding: 13px !important;
+        border-radius: 10px;
+    }
+    ul.navbar-nav {
+        width: 100%;
+    }
+    .header-part li.login-white { 
+        width: 118px !important;
+        padding: 5px 5px 10px 3px !important;
+    }
+    .dropdown.home_header_dropdown {
+        margin: -6px  0 -12px -5px;
+    }
+    #doctor-profile a.navbar-brand img {
+        width: 85px !important;
+    }
+    #header_search_keywords { 
+        margin-top: 0;
+    }
+    button.sub_header_menu_toggle {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 999;
+            padding: 3px 7px;
+    }
+}

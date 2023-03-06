@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {LOGIN_PHONE_NUMBER, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, APPOINTMENT_ID, DOCTOR_NAME, DOCTOR_FEES, SCHEDULE_TIME} from '../../constants';
+import {LOGIN_PHONE_NUMBER, USER_ROLE, USER_EMAIL, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, APPOINTMENT_ID, DOCTOR_NAME, DOCTOR_FEES, SCHEDULE_TIME} from '../../constants';
 import { scAxios } from '../..';
 import { startUserSession } from '../../userSession';
 import { ToastContainer, toast } from 'react-toastify';
@@ -85,6 +85,8 @@ class SubPopupPatientLists extends Component {
     const data = {
         patientid: this.state.patient_id,
     }
+    const user_role = localStorage.getItem(USER_ROLE);
+    const user_email = localStorage.getItem(USER_EMAIL);
     const patient_id = this.state.patient_id; 
     const patientName = this.state.patient_name;
     const login_phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER); 
@@ -99,7 +101,7 @@ class SubPopupPatientLists extends Component {
     PatientLoginUser(data)
     .then(res => {
       if (!!res[0].token) {
-          startUserSession(res[0].token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+          startUserSession(res[0].token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, appointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
           this.setState({ signin_success: true});
           this.onClickPopupShow();
       } else {

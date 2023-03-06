@@ -335,6 +335,8 @@ class SubPopupIndex4 extends Component {
       .then(res => {
         if(res.length > 1){
           let token = '';
+          let user_role = '2';
+          let user_email = '';
           let phone_number = this.state.phone_number;
           let search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
           let patientid = '';
@@ -346,7 +348,7 @@ class SubPopupIndex4 extends Component {
           let schedule_time = localStorage.getItem(SCHEDULE_TIME);
           let search_selected_doc_name = '';
           let doctor_profile_avability = '';
-          startUserSession(token, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+          startUserSession(token, user_role, user_email, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
           this.onClickPopupShow();
           //this.props.nextStep();
         } else {
@@ -366,6 +368,8 @@ class SubPopupIndex4 extends Component {
     }
   }
   PatientLoginSubmit = (data, phone_number, patient_name) => {
+    let user_role = '2';
+    let user_email = '';
     let login_phone_number = phone_number;
     let search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
     let schedule_date = localStorage.getItem(SCHEDULE_DATE);
@@ -379,7 +383,7 @@ class SubPopupIndex4 extends Component {
     LoginPatient(data)
     .then(res => {
       if (!!res[0].token) {
-        startUserSession(res[0].token, data.patientid, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+        startUserSession(res[0].token, user_role, user_email, data.patientid, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
         this.setState({ signin_success: true});
         this.refreshResetOTPData();
         this.setState({showPaymentPopup: true});

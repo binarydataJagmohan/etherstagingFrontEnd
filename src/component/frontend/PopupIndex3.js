@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {API_TOKEN_NAME, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, USER_ID, LOGIN_PHONE_NUMBER, PATIENT_NAME, SEARCH_SELECTED_DOC_NAME, IMAGE_URL} from '../../constants';
+import {API_TOKEN_NAME, USER_ROLE, USER_EMAIL, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, USER_ID, LOGIN_PHONE_NUMBER, PATIENT_NAME, SEARCH_SELECTED_DOC_NAME, IMAGE_URL} from '../../constants';
 import { scAxios, scAxiosAdmin } from '../..';
 import { startUserSession } from '../../userSession';
 import { ToastContainer, toast } from 'react-toastify';
@@ -100,6 +100,8 @@ class PopupIndex3 extends Component {
     }, () => this.validateForm());
     let change_schedule_date_val = document.getElementById('change_schedule_date').value;
     const token = localStorage.getItem(API_TOKEN_NAME);
+    const user_role = localStorage.getItem(USER_ROLE);
+    const user_email = localStorage.getItem(USER_EMAIL);
     const patient_id = localStorage.getItem(USER_ID);
     const login_phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER);
     const search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
@@ -110,7 +112,7 @@ class PopupIndex3 extends Component {
     const patientName = localStorage.getItem(PATIENT_NAME);
     const schedule_time = '';
     const search_selected_doc_name = localStorage.getItem(SEARCH_SELECTED_DOC_NAME);
-    startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
+    startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
     const data = {
       DoctorID: localStorage.getItem(SEARCH_SELECTED_DOC_ID),
       PreferredDate: change_schedule_date_val,
@@ -124,6 +126,8 @@ class PopupIndex3 extends Component {
       fields["schedule_date_time"] = "";
       this.setState({ fields: fields });
       let token = localStorage.getItem(API_TOKEN_NAME);
+      const user_role = localStorage.getItem(USER_ROLE);
+      const user_email = localStorage.getItem(USER_EMAIL);
       let phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER);
       let search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
       let patientid = localStorage.getItem(USER_ID);
@@ -135,7 +139,7 @@ class PopupIndex3 extends Component {
       let patientName = localStorage.getItem(PATIENT_NAME);
       let schedule_time = this.state.schedule_date_time;
       let search_selected_doc_name = localStorage.getItem(SEARCH_SELECTED_DOC_NAME);
-      startUserSession(token, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
+      startUserSession(token, user_role, user_role, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name);
       this.props.nextStep();
     } else {
     }

@@ -91,7 +91,6 @@ class PatientLists extends Component {
     }
     PatientLoginUser(data)
     .then(res => {
-      console.log(res);
       if (!!res[0].token) {
           startUserSession(res[0].token);
           this.setState({ signin_success: true});

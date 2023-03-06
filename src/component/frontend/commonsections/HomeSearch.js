@@ -268,7 +268,7 @@ class HomeSearch extends Component {
                 ?
                 this.state.bannerbuttons.map(banner_button => {
                   return (
-                    <div className="col-sm-3 mt-4">
+                    <div className="col-lg-3 col-md-6 mt-4">
                       <a href={SITE_URL + '/pages/' + banner_button.slug} style={{ "text-decoration": "none" }}>
                         <div className="excellence-part" data-aos="zoom-in" data-aos-duration="1000">
                           <div className="row">

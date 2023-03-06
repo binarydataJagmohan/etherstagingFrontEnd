@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {API_TOKEN_NAME, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, USER_ID, LOGIN_PHONE_NUMBER, PATIENT_NAME, IMAGE_URL, SEARCH_SELECTED_DOC_NAME} from '../../constants';
+import {API_TOKEN_NAME, USER_ROLE, USER_EMAIL, SEARCH_SELECTED_DOC_ID, SCHEDULE_DATE, USER_ID, LOGIN_PHONE_NUMBER, PATIENT_NAME, IMAGE_URL, SEARCH_SELECTED_DOC_NAME} from '../../constants';
 import { scAxios, scAxiosAdmin } from '../..';
 import { startUserSession } from '../../userSession';
 import { ToastContainer, toast } from 'react-toastify';
@@ -115,6 +115,8 @@ class SubPopupIndex3 extends Component {
     if(localStorage.getItem(API_TOKEN_NAME)){
       let change_schedule_date_val = document.getElementById('change_schedule_date').value;
       const token = localStorage.getItem(API_TOKEN_NAME);
+      const user_role = localStorage.getItem(USER_ROLE);
+      const user_email = localStorage.getItem(USER_EMAIL);
       const patient_id = localStorage.getItem(USER_ID);
       const login_phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER);
       const search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
@@ -126,7 +128,7 @@ class SubPopupIndex3 extends Component {
       const schedule_time = '';
       const search_selected_doc_name = localStorage.getItem(SEARCH_SELECTED_DOC_NAME);
       const doctor_profile_avability = '';
-      startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+      startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
       const data = {
         DoctorID: localStorage.getItem(SEARCH_SELECTED_DOC_ID),
         PreferredDate: change_schedule_date_val,
@@ -135,6 +137,8 @@ class SubPopupIndex3 extends Component {
     } else {
       let change_schedule_date_val = document.getElementById('change_schedule_date').value;
       const token = '';
+      const user_role = '2';
+      const user_email = '';
       const patient_id = '';
       const login_phone_number = '';
       const search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
@@ -146,7 +150,7 @@ class SubPopupIndex3 extends Component {
       const schedule_time = '';
       const search_selected_doc_name = '';
       const doctor_profile_avability = '';
-      startUserSession(token, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+      startUserSession(token, user_role, user_email, patient_id, login_phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
       const data = {
         DoctorID: localStorage.getItem(SEARCH_SELECTED_DOC_ID),
         PreferredDate: change_schedule_date_val,
@@ -162,6 +166,8 @@ class SubPopupIndex3 extends Component {
       this.setState({ fields: fields });
       if(localStorage.getItem(API_TOKEN_NAME)){
           let token = localStorage.getItem(API_TOKEN_NAME);
+          let user_role = localStorage.getItem(USER_ROLE);
+          let user_email = localStorage.getItem(USER_EMAIL);
           let phone_number = localStorage.getItem(LOGIN_PHONE_NUMBER);
           let search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
           let patientid = localStorage.getItem(USER_ID);
@@ -174,12 +180,14 @@ class SubPopupIndex3 extends Component {
           let schedule_time = this.state.schedule_date_time;
           let search_selected_doc_name = '';
           let doctor_profile_avability = '';
-          startUserSession(token, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+          startUserSession(token, user_role, user_email, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
           this.setState({
             showPaymentPopup: true,
           });
       } else {
         let token = '';
+        let user_role = '2';
+        let user_email = '';
         let phone_number = '';
         let search_selected_doc_id = localStorage.getItem(SEARCH_SELECTED_DOC_ID);
         let patientid = '';
@@ -191,7 +199,7 @@ class SubPopupIndex3 extends Component {
         let schedule_time = this.state.schedule_date_time;
         let search_selected_doc_name = '';
         let doctor_profile_avability = '';
-        startUserSession(token, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
+        startUserSession(token, user_role, user_email, patientid, phone_number, search_selected_doc_id, schedule_date, apointment_id, doctor_name, doctor_fees, patientName, schedule_time, search_selected_doc_name, doctor_profile_avability);
         this.setState({
           showLoginPopup: true,
           showPopup: false

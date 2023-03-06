@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-//import {API_TOKEN_NAME} from '../../constants';
+import {API_TOKEN_NAME, PATIENT_NAME, USER_ID, IMAGE_URL} from '../../constants';
 import {Route} from 'react-router-dom';
-//import { scAxios } from '../..';
+import { scAxios, scAxiosAdmin } from '../..';
 //import { ToastContainer, toast } from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
 import LeftSidebar from '../../component/dashboard/leftsidebar';
@@ -19,7 +19,128 @@ import search_icon from '../../images/search-icon.png';
 import graf2 from '../../images/graf2.png';
 import graf3 from '../../images/graf3.png';
 
+const GetSinglePatientsData = (data) => {
+  return new Promise((resolve, reject) => {
+      const req = scAxios.request('/patients', {
+          method: 'get',
+          headers: {
+              'Accept': 'application/json',
+          },
+          params: {
+              ...data
+          }
+      });
+      req.then(res => resolve(res.data))
+          .catch(err => reject(err));
+  });
+}
+const GetPatitentAppointment = (data) => {
+  return new Promise((resolve, reject) => {
+      const req = scAxios.request('/appointment', {
+          method: 'get',
+          headers: {
+              'Accept': 'application/json',
+          },
+          params: {
+              ...data
+          }
+      });
+      req.then(res => resolve(res.data))
+          .catch(err => reject(err));
+  });
+}
+const getSingleDoctorData = (id) => {
+  return new Promise((resolve, reject) => {
+    const req = scAxiosAdmin.request('/doctors/getsingledoctors/'+id, {
+      method: 'get',
+      headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem(API_TOKEN_NAME)
+      }
+    });
+    req.then(res => resolve(res.data))
+        .catch(err => reject(err));
+  });
+}
 class Appointments extends Component {
+  state = {
+    patient_ID: '',
+    patient_age: '',
+    patient_gender: '',
+    patient_name: '',
+    patient_phone: '',
+    latest_consultant:[],
+    doctor_name: '',
+    appointment_date:'',
+    department_name: '',
+    doctor_id:'',
+    doctor_profile:'',
+    patient_report_data:[],
+    paitent_report_doctor_name:'',
+  }
+  refreshSinglePatientsData = () => {
+    const data = {
+      patient: localStorage.getItem(USER_ID) 
+    }
+    GetSinglePatientsData(data)
+    .then(res => {
+      this.setState({
+        patient_ID: res[0].patient_ID,
+        patient_age: res[0].patient_age,
+        patient_gender: res[0].patient_gender,
+        patient_name: res[0].patient_name,
+        patient_phone: res[0].patient_phone,
+      });
+      if(res[0].latest_consultant){
+        this.setState({latest_consultant: res[0].latest_consultant});
+      } else {
+        this.setState({latest_consultant: ''});
+      }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }
+  refreshGetPatitentAppointment = () => {
+    const data = {
+      xpatient: localStorage.getItem(USER_ID) 
+    }
+    GetPatitentAppointment(data)
+    .then(res => {
+      this.refreshGetDoctorData(res[0].doctor[0].id);
+      this.setState({
+        doctor_name: res[0].doctor[0].name,
+        appointment_date: res[0].date,
+        department_name: res[0].doctor[0].dept_name,
+        doctor_id: res[0].doctor[0].id,
+      });
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }
+  refreshGetDoctorData = (id) => {
+    getSingleDoctorData(id)
+    .then(res => {
+      if(res.status===true){
+        var records = res.data;
+        this.setState({ 
+          doctor_profile: records.doctor_profile,
+        });
+      } else {
+        this.setState({  
+          doctor_profile: '',
+        });
+      }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }
+  componentDidMount(){
+    this.refreshSinglePatientsData();
+    this.refreshGetPatitentAppointment();
+  }
   render() {
     return (
       <div>
@@ -30,30 +151,43 @@ class Appointments extends Component {
               <div className="dash-body" id="dark-version-body"> 
                 <div className="row mt-4">
                   <div className="col-sm-4"> 
-                    <div className="dash-text sspp">                          
+                    <div className="dash-text sspp">                       
                       <h3 className="mb-3 Your">Your Appointments</h3>
                       <h3 className="mb-3">Appointments <i className="fa-solid fa-calendar"></i> </h3> 
-                      <div className="row">
-                        <div className="col-3 img-sp">
-                          <img src={dr_photo} alt="drphoto"/>
-                        </div>
-                        <div className="col-9 prof sp-l-r">
-                          <p><b>PROF. DR. MUHAMMAD HAFIZUR RAHMAN</b></p>
-                          <p>Endocrinology & Metabolism</p>
-                          <p className="date-link">Referred By <span>Kazi A. Karim</span> on <a href="#">Jan 10, 2022</a></p>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-5 img-sp">
-                          <p className="mt-3 Date-time">Date <br/><b>Jan 22, 2022</b></p> 
-                        </div>
-                        <div className="col-7">                      
-                          <p className="mt-3 Date-time">Time <br/><b>9:30 am - 10:00 am</b></p>
-                        </div>
-                        <div className="col-sm-12">                       
-                          <button className="btn-notes mt-3">Schedule Followup</button>
-                        </div>
-                      </div> 
+                      {this.state.appointment_date  
+                        ?
+                          <div>
+                            <div className="row">
+                              <div className="col-3 img-sp">
+                                { this.state.doctor_profile 
+                                  ?
+                                    <img src={IMAGE_URL+'/DoctorProfileImg/'+this.state.doctor_profile} alt={this.state.doctor_profile}/>
+                                  :
+                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg" alt={this.state.doctor_profile}/>
+                                    /*<img src={dr_photo} alt="drphoto"/>*/
+                                }
+                              </div>
+                              <div className="col-9 prof sp-l-r">
+                                <p><b>{this.state.doctor_name}</b></p>
+                                <p>{this.state.department_name}</p>
+                                <p className="date-link">Referred By <span>{this.state.doctor_name}</span> on <a href="#">{this.state.appointment_date}</a></p>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-5 img-sp">
+                                <p className="mt-3 Date-time">Date <br/><b>{this.state.appointment_date}</b></p> 
+                              </div>
+                              <div className="col-7">                      
+                                <p className="mt-3 Date-time">Time <br/><b>9:30 am - 10:00 am</b></p>
+                              </div>
+                              <div className="col-sm-12">                       
+                                <button className="btn-notes mt-3">Schedule Followup</button>
+                              </div>
+                            </div> 
+                          </div>
+                        :
+                          <p>No appointment data found</p>
+                      }
                     </div>
                   </div>
                   <div className="col-sm-5"> 
@@ -119,10 +253,10 @@ class Appointments extends Component {
                   <div className="row">
                     <div className="col-sm-4 shadab-boarder"> 
                       <h3 className="mb-3">Profile </h3>  
-                      <p>Name: <b>Shadab Khondoker</b></p>
-                      <p>Age:<b> 45 </b></p>
-                      <p>Gender: <b>Female</b></p>
-                      <p>Phone No:<b>01731057667 </b></p>
+                      <p>Name: <b>{this.state.patient_name}</b></p>
+                      <p>Age:<b> {this.state.patient_age} </b></p>
+                      <p>Gender: <b>{this.state.patient_gender}</b></p>
+                      <p>Phone No:<b>{this.state.patient_phone} </b></p>
                       <div className="row mt-4 shadab-boarder-top-left">
                         <div className="col-6">
                           <p><b>Known Conditions</b></p>
@@ -138,51 +272,27 @@ class Appointments extends Component {
                       <h3 className="Your">Past Consultations</h3>
                       <table className="table table-part" id="table-apppin"> 
                         <tbody>
-                          <tr>
-                            <td>August 10, 2020 <b>Consultation</b> with <b>Kazi A Karim</b></td>
-                            <td className="text-right">
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>August 10, 2020 <b>Consultation</b> with <b>Kazi A Karim</b></td>
-                            <td className="text-right">
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>August 10, 2020 <b>Consultation</b> with <b>Kazi A Karim</b></td> 
-                            <td className="text-right"> 4 <i className="fa-solid fa-star" style={{ color: '#ffc45b' }}></i> 
-                            <button className="btn btn-secondary">Details</button></td>
-                          </tr>
-                          <tr>
-                            <td>August 10, 2020 <b>Consultation</b> with <b>Kazi A Karim</b></td> 
-                            <td className="text-right">
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>August 10, 2020 <b>Consultation</b> with <b>Kazi A Karim</b></td> 
-                            <td className="text-right">
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                              <i className="fa-regular fa-star"></i>
-                            </td>
-                          </tr> 
+                          {  this.state.latest_consultant.length > 0
+                            ?
+                              this.state.latest_consultant.map(latest_consultant_data => {
+                                return(
+                                  <tr>
+                                    <td>{latest_consultant_data.date} <b>Consultation</b> with <b>{latest_consultant_data.doctor_detail.name}</b></td>
+                                    <td className="text-right">
+                                      <i className="fa-regular fa-star"></i>
+                                      <i className="fa-regular fa-star"></i>
+                                      <i className="fa-regular fa-star"></i>
+                                      <i className="fa-regular fa-star"></i>
+                                      <i className="fa-regular fa-star"></i>
+                                    </td>
+                                    {/*<td className="text-right"> 4 <i className="fa-solid fa-star" style={{ color: '#ffc45b' }}></i> 
+                                    <button className="btn btn-secondary">Details</button></td>*/}
+                                  </tr>
+                                )
+                              })
+                            :
+                              <p>No Any Latest Consultations</p> 
+                          }
                         </tbody>
                       </table>
                     </div>
