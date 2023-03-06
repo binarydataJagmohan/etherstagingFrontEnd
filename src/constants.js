@@ -30,14 +30,14 @@ if(window.location.hostname ==='localhost'){
 	Pageurl = 'http://localhost:3000/pages/';
 	siteUrl = 'http://localhost:3000';
 } else {
-	imgUrl = 'http://etherstaging.com/unitedhospitalapi/public/';
-   	dynUrl = 'http://etherstaging.com/unitedhospitalapi//api';
-   	Pageurl = 'http://etherstaging.com/pages/'; 
-   	siteUrl = 'http://etherstaging.com';
+	imgUrl = 'http://etherstagingbackend.jagmohankrishan.com/public/';
+   	dynUrl = 'http://etherstagingbackend.jagmohankrishan.com/api';
+   	Pageurl = 'http://etherstagingbackend.jagmohankrishan.com/pages/'; 
+   	siteUrl = 'http://etherstagingbackend.jagmohankrishan.com';
 }
 
 export const IMAGE_URL = imgUrl;
 export const BASE_URL = dynUrl;
 export const WEBSITEPAGE_URL = Pageurl;
 export const SITE_URL = siteUrl;
-export const PROFILE_URL = 'http://etherstaging.com/unitedhospitalapi';
+export const PROFILE_URL = 'http://etherstagingbackend.jagmohankrishan.com';
