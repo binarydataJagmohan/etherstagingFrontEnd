@@ -264,6 +264,7 @@ class PopupRegister extends Component {
       }
       var new_encoded_otp = btoa(encoded_otp);
       let messageBody = "Your OTP is "+six_digit_random_number;
+      console.log(messageBody);
       var encoded = "";
       var messageBodyText = btoa(messageBody);
       for (let i=0; i<messageBodyText.length;i++) {
