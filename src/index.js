@@ -31,14 +31,14 @@ if(window.location.hostname ==='localhost'){
     //dynUrl = 'http://45.64.132.130:3388/zab';
     //dynUrl = 'https://cors-anywhere.herokuapp.com/http://45.64.132.149:3388/zab';
     dynUrl = 'http://45.64.132.149:3388/zab';
-    dynUrlSms = 'http://etherstaging.com/unitedhospitalapi/api';
+    dynUrlSms = 'http://etherstagingbackend.jagmohankrishan.com/api';
 }else {
     dynAdmUrl = 'http://etherstagingbackend.jagmohankrishan.com/api';
     //dynUrl = 'http://localhost/reactjs/demoreactapibackend/api';
     //dynUrl = 'https://cors-anywhere.herokuapp.com/http://45.64.132.130:3388/zab';
     //dynUrl = 'http://45.64.132.130:3388/zab';
     //dynUrl = 'https://cors-anywhere.herokuapp.com/http://45.64.132.149:3388/zab';
-    dynUrl = 'http://45.64.132.149:3388/zab';
+    dynUrl =    'http://45.64.132.149:3388/zab';
     dynUrlSms = 'http://etherstagingbackend.jagmohankrishan.com/api';
 }
 //  else {

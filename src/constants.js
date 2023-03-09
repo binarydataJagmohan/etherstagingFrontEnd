@@ -32,8 +32,8 @@ if(window.location.hostname ==='localhost'){
 } else {
 	imgUrl = 'http://etherstagingbackend.jagmohankrishan.com/public/';
    	dynUrl = 'http://etherstagingbackend.jagmohankrishan.com//api';
-   	Pageurl = 'http://etherstagingfrontend.jagmohankrishan.com/pages/'; 
-   	siteUrl = 'http://etherstagingfrontend.jagmohankrishan.com';
+   	Pageurl = 'https://etherstaging.jagmohankrishan.com/pages/'; 
+   	siteUrl = 'https://etherstaging.jagmohankrishan.com/';
 }
 
 export const IMAGE_URL = imgUrl;
